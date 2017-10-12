@@ -1,0 +1,21 @@
+sudo: false
+language: scala
+cache:
+  directories:
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
+scala:
+- 2.12.3
+jdk:
+- oraclejdk8
+script:
+- sbt clean test
+after_success:
+- '[[ $TRAVIS_BRANCH == "master" ]] && { sbt publish; };'
+before_cache:
+- find $HOME/.ivy2 -name "ivydata-*.properties" -delete
+- find $HOME/.sbt -name "*.lock" -delete
+env:
+  global:
+  - secure: Jk5s8rh/TdkxAdYdDlh0QybS+uaLpjcNgzuRLoHVlu6CtT03ZfazQpr8Yrmu8Izpps/YucJ1VCV1RiQfQLxB3IRtMLi3gji4yiuN3bCjv4oi/lX+8/loMuK8W4ggQw1rZHBI9C2VyGKJlv2lxrfxyqygHRRMmx45u8swD6+pbS9xAlDeXpbvQzzavzptwwsAUSvOBIwJpxPa/llR8gzSpVsVqvbI2jO9CePVV35A29PxsM7vm58CrVY9wNtHo582Yk1evG7SoCwVvRf4L1w1/Ymz3La2szxlq4rBS3lmCaIY1Sz0vaLMRUGdJ3I6CvTWbPGjMokGqcA1ferktmlCJAdIJK/p4hoASxqpKaZQnHELDXekXH1FleS1XYyg5JQgciB32O86STs3+0cKgabY7v/id86MYJOkSHe9mU+3FFfSdItepqiMXuvynOcw4RO/mCw6/7npI0PeFKBoiwxoyR6xAr278QagFkaRwRs05OkujQ0mNLRTvVlP3fPacZNR4u4w6JdnJ4ow++5iJ2CBoV3mklc53yqdskMeOsPVXdUDY5KTR52WJCmpcTv//VOsLIw8rduIiTilK2Qb3cjag09iPJ+P33J/PhaKB68bdal9XaLcQVddXhCZtOcmSqYqkWL7LEEPL5rpZeSSHWwOd29scjgdiII73BmyqTv6hWw=
+  - secure: lapoU0vgMXfj/zwFMLYAMvI0o/IUYHJlYxl69Z70gi3wCEW18CTF/xqWgPXCRRO1sWx0KpcHNcQF8VOhQC4FlYkUv4qiD/w2ITsQ+kBD31izqGIqxfzQMSb4VOKA4WwB4ColsG0ugO9Q2G47rAacYArVsnB9NZJsga7ZaTxULujUlhQp+TtIrIb5WPz4QBjbjaNTNHeRP7z8Z8VAiu0MB5SC33siv/hyrg1xnMnGH558Mq9QMd3ubZzyZVyRT7CFqzWBnh7h1HgOvwhR35kwWOpzlUbpO0olP0m/G9UehRtIdmA779Wft29S6HpIOixyMebAAv/ZhLcdT1RWgl+zSjG+uUAa9DizGPDhLR6leb4YPrl/cPuqiydWD9FooAJ7ElCeyzXn1258uFVbTR5nAcerL6g3EOwvU6TeIFCzaC9HgXdGs0sKM8OucEx3CE2qV/glqj1zcEkdRGRcJB5Ms00mQlmwIqf4YhiwguDOG7fRXr71lR+wWH8mH5rjuWYovI2yWsN15T4fXC6ZoqDG+860g87pQl7kYQ63UGbBUx+I+ndl7KLKsrrXB0u8vpquq1nKGDSO9zktR2hJmWfHg9JyYJryfSI5rcpPcJewbQBtg8eTbMHbxxj0qBCdFO1x4CF1t57aCZnm9zqiER4vBS4R7kAPBNlwHMfTS9VLIds=
