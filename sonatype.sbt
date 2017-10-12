@@ -8,6 +8,7 @@ credentials ++= (for {
 // Your profile name of the sonatype account. The default is the same with the organization value
 sonatypeProfileName := "au.com.agiledigital"
 
+releaseCrossBuild := true
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
@@ -16,9 +17,9 @@ releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  releaseStepCommand("publishSigned"),
+  releaseStepCommand("^publishSigned"),
   setNextVersion,
   commitNextVersion,
-  releaseStepCommand("sonatypeReleaseAll"),
+  releaseStepCommand("^sonatypeReleaseAll"),
   pushChanges
 )

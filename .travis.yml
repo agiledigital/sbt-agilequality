@@ -11,7 +11,7 @@ jdk:
 script:
 - sbt clean test
 after_success:
-- '[[ $TRAVIS_BRANCH == "master" ]] && { sbt publish; };'
+- '[[ $TRAVIS_BRANCH == "master" ]] && { sbt ^publish; };'
 before_cache:
 - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
 - find $HOME/.sbt -name "*.lock" -delete
