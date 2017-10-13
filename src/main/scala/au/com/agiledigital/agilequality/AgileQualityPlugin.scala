@@ -114,9 +114,24 @@ object AgileQualityPlugin extends AutoPlugin {
     )
   )
 
+  val configFilename = ".scalafmt.conf"
+
+  val copyScalafmtConfig = TaskKey[Unit]("copyScalafmtConfig", "Copy scalafmt config file to default location.")
+
   // See https://github.com/lucidsoftware/neo-sbt-scalafmt#task-configuration
   private lazy val scalaFmtSettings = Seq(
-    scalafmtConfig := new File(getClass.getResource("default.scalafmt.conf").toExternalForm),
+    (scalafmt in Compile) := {
+      val log = streams.value.log
+      if (!file(configFilename).exists()) {
+        log.warn(s"Scalafmt config file [$configFilename] not found. Run `copyScalafmtConfig` to copy it into place.")
+      }
+      (scalafmt in Compile).value
+    },
+    copyScalafmtConfig := {
+      val stream = getClass.getResourceAsStream("default.scalafmt.conf")
+      IO.transfer(stream, file(configFilename))
+      stream.close()
+    },
     // TODO: Use scalafmt 1.3.0 once sbt-scalafmt recognises it and stops emitting warnings.
     scalafmtVersion := "1.2.0"
   )
