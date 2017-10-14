@@ -1,0 +1,1 @@
+addSbtPlugin("au.com.agiledigital" % "sbt-agilequality" % sys.props("plugin.version"))

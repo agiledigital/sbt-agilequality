@@ -17,6 +17,9 @@ def addSbtPluginHack(dependency: ModuleID): Setting[Seq[ModuleID]] =
     Defaults.sbtPluginExtra(dependency, sbtV, scalaV)
   }
 
-// set up 'scripted; sbt plugin for testing sbt plugins
-//scriptedLaunchOpts ++=
-//  Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
+// http://www.scala-sbt.org/0.13/docs/Testing-sbt-plugins.html
+ScriptedPlugin.scriptedSettings
+scriptedLaunchOpts := {
+  scriptedLaunchOpts.value ++
+    Seq("-Xmx1024M", "-XX:MaxPermSize=256M", "-Dplugin.version=" + (version in ThisBuild).value)
+}

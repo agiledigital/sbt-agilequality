@@ -9,7 +9,7 @@ scala:
 jdk:
 - oraclejdk8
 script:
-- sbt clean test
+- sbt clean test scripted
 after_success:
 - '[[ $TRAVIS_BRANCH == "master" ]] && { sbt ^publish; };'
 before_cache:
