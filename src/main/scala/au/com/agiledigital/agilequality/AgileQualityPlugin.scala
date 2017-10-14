@@ -10,6 +10,12 @@ import scoverage.ScoverageSbtPlugin
 
 object AgileQualityPlugin extends AutoPlugin {
 
+  object autoImport {
+    val copyScalafmtConfig = taskKey[Unit]("Copy scalafmt config file to default location.")
+  }
+
+  import autoImport._
+
   override def trigger: PluginTrigger = allRequirements
 
   override def requires: Plugins = {
@@ -116,7 +122,20 @@ object AgileQualityPlugin extends AutoPlugin {
 
   // See https://github.com/lucidsoftware/neo-sbt-scalafmt#task-configuration
   private lazy val scalaFmtSettings = Seq(
-    scalafmtConfig := new File(getClass.getResource("default.scalafmt.conf").toExternalForm),
+    (scalafmt in Compile) := {
+      val log = streams.value.log
+      val configFile = scalafmtConfig.value
+      if (!scalafmtConfig.value.exists()) {
+        log.warn(s"Scalafmt config file [$configFile] not found. Run `copyScalafmtConfig` to copy it into place.")
+      }
+      (scalafmt in Compile).value
+    },
+    copyScalafmtConfig := {
+      val stream = getClass.getResourceAsStream("default.scalafmt.conf")
+      val configFile = scalafmtConfig.value
+      IO.transfer(stream, configFile)
+      stream.close()
+    },
     // TODO: Use scalafmt 1.3.0 once sbt-scalafmt recognises it and stops emitting warnings.
     scalafmtVersion := "1.2.0"
   )
