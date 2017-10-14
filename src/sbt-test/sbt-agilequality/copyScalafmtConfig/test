@@ -1,0 +1,4 @@
+# Test copyScalafmtConfig task
+
+> copyScalafmtConfig
+$ exists .scalafmt.conf
